@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Header from "../../../Components/Header/Header";
 
 const s = StyleSheet.create({
@@ -40,16 +41,19 @@ const s = StyleSheet.create({
         flex: 1,
         backgroundColor: '#ffffff'
     },
+    QuestionButton: {
+        alignItems: 'center'
+    },
     QuestionText: {
         fontSize: 15,
         color: '#5F0080',
         fontWeight: 'bold',
         padding: '4%',
-        textAlign: 'center'
     }
 });
 
 export default({orderNum, name, option, amount, state, date}) => {
+    const navigation = useNavigation();
 
     return (
         <View style={s.OrderDetailsView}>
@@ -82,9 +86,15 @@ export default({orderNum, name, option, amount, state, date}) => {
                 <Text style={s.SubText}>추가정보</Text>
             </View>
             <View style={s.QuestionView}>
-                <TouchableOpacity>
-                    <Text style={s.QuestionText}>1:1 문의하기 {'>'}</Text>
-                </TouchableOpacity>
+                <View style={s.QuestionButton}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.push('WriteQuestionPresenter');
+                        }}
+                    >
+                        <Text style={s.QuestionText}>1:1 문의하기 {'>'}</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     )
