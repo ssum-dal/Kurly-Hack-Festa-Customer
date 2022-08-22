@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { ConvertDateForm } from "../../Utils/Date";
 
 const s = StyleSheet.create({
     OrderView: {
@@ -41,7 +42,7 @@ function Order({navigation, orderNum, name, option, amount, state, date }) {
     return (
         <View style={s.OrderView}>
             <View style={s.DateView}>
-                 <Text style={s.DateText}>{date}</Text>
+                 <Text style={s.DateText}>{ConvertDateForm(new Date(date))}</Text>
                  <TouchableOpacity
                     onPress={() => {
                         navigation.push('DetailsPresenter',{
