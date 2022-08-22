@@ -66,11 +66,11 @@ function Order({navigation, orderNum, name, option, amount, state, date }) {
                      <Text style={s.CategoryText}>주문 상태</Text>
                 </View>
                 <View>
-                    <Text style={s.ItemDetailText}>{name}</Text>
+                    <Text style={s.ItemDetailText} numberOfLines={1} ellipsizeMode="tail">{name}</Text>
                     <Text style={s.ItemDetailText}>{orderNum}</Text>
                     <Text style={s.ItemDetailText}>{option}</Text>
                     <Text style={s.ItemDetailText}>{amount}</Text>
-                    <Text style={s.ItemDetailText}>{state}</Text>
+                    <Text style={s.ItemDetailText}>{state == 0 ? '주문 접수' : state == 1 ? '배송완료' : '배송지연'}</Text>
                 </View>
             </View>
         </View>

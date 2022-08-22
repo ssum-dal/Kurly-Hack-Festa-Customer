@@ -1,18 +1,9 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import axios from "axios";
 import Header from "../../../Components/Header/Header";
 import Order from "../../../Components/Order/Order";
-
-const info =[
-    {
-        name: '[퀘스크렘] 라이트 크림치즈 외 1건',
-        orderNum: 2276715160026,
-        option: '신용카드',
-        amount: '11,900원',
-        state: '배송 완료',
-        date: '2022.07.30'
-    },
-]
+import { mainURL } from "../../../Context/Route";
 
 const s = StyleSheet.create({
     OrderHistoryView: {
@@ -22,28 +13,43 @@ const s = StyleSheet.create({
 });
 
 export default({navigation}) => {
+    const [orderList, setOrderList] = useState([]);
 
     const renderOrderList= ({item, index}) => {
         return (
             <Order
                 navigation={navigation}
-                orderNum={item.orderNum}
-                name={item.name}
-                option={item.option}
-                amount={item.amount}
-                state={item.state}
-                date={item.date}
+                orderNum={item.order_num}
+                name={item.order_product}
+                option={item.pay_by}
+                amount={item.pay_price}
+                state={item.order_status}
+                date={item.order_date}
             />
         );
     }
+
+    useEffect(() => {
+
+        const getData = async() => {
+            const url = `${mainURL}/user/order`;
+
+            await axios.get(url).then((result) => {
+                const response = JSON.parse(result.request._response);
+                setOrderList(response);
+            })
+        }
+        getData();
+
+    }, []);
 
     return(
         <View style={s.OrderHistoryView}>
             <Header title={'주문 내역'}/>
             <FlatList
-                data={info}
+                data={orderList}
                 renderItem={renderOrderList}
-                keyExtractor={(item) => String(item.orderNum)}
+                keyExtractor={(item) => String(item.order_num)}
             />
         </View>
     )
