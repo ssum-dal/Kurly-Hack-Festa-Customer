@@ -30,8 +30,13 @@ const s = StyleSheet.create({
     },
     OrderStateText: {
         fontSize: 15,
-        fontWeight: 'bold',
         color: '#000000',
+        paddingHorizontal: '5%',
+    },
+    CompletedText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#5F0080',
         paddingHorizontal: '5%',
         textDecorationLine: 'underline'
     },
@@ -65,15 +70,14 @@ export default({orderNum, state}) => {
             <View style={s.OrderState}>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={s.OrderText}>{ConvertTemperature(item.temperature)}</Text>
-                    { item.delivered_date && 
                     <TouchableOpacity
+                        disabled={item.tracking_status == 3 ? false: true}
                         onPress={() => {
                             navigation.push('DeliveryCompleted');
                         }}
                     >
-                        <Text style={s.OrderStateText}>배송완료</Text>
+                        <Text style={item.tracking_status == 3 ? s.CompletedText : s.OrderStateText}>{ConvertStatus(item.tracking_status)}</Text>
                     </TouchableOpacity>
-                    }
                 </View>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={s.OrderText}>넥스트마일</Text>
@@ -125,7 +129,9 @@ export default({orderNum, state}) => {
                 <View style={s.QuestionButton}>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.push('WriteQuestionPresenter');
+                            navigation.push('WriteQuestionPresenter', {
+                                orderNum: orderNum
+                            });
                         }}
                     >
                         <Text style={s.QuestionText}>1:1 문의하기 {'>'}</Text>

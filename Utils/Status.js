@@ -2,9 +2,11 @@ export const ConvertStatus = (status) => {
     if (status == 0) {
         return "주문접수"
     } else if (status == 1) {
-        return "배송완료"
-    } else {
+        return "배송중"
+    } else if (status == 2) {
         return "배송지연"
+    } else {
+        return "배송완료"
     }
 }
 
