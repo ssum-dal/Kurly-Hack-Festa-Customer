@@ -30,7 +30,11 @@ export default () => {
             />
             <Stack.Screen
                 name="WriteQuestionPresenter"
-                component={WriteQuestionPresenter}
+                children={({route}) => (
+                    <WriteQuestionPresenter
+                        orderNum={route.params.orderNum}
+                    />
+                )}
                 options={{headerShown: false, gestureEnabled: true}}
             />
         </Stack.Navigator>

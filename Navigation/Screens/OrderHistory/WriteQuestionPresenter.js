@@ -1,9 +1,13 @@
-import React, { useRef, useState } from "react";
-import { View, Text, StyleSheet, Keyboard, TextInput, TouchableWithoutFeedback, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, StyleSheet, Keyboard, TextInput, TouchableWithoutFeedback, TouchableOpacity, ScrollView, ImageBackground, Alert, ToastAndroid } from "react-native";
 import Header from "../../../Components/Header/Header";
 import Icon from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import axios from "axios";
+import { mainURL } from "../../../Context/Route";
+import { ConvertCategory } from "../../../Utils/Status";
+import { useNavigation } from "@react-navigation/native";
 
 const s = StyleSheet.create({
     WriteQuestionView: {
@@ -57,7 +61,11 @@ const s = StyleSheet.create({
         width: '100%',
         aspectRatio: 1/1,
     },
-    ButtonView: {
+    DisabledButton: {
+        backgroundColor: '#dddddd',
+        borderRadius: 7
+    },
+    ActivatedButton: {
         backgroundColor: '#5F0080',
         borderRadius: 7
     },
@@ -85,10 +93,58 @@ const s = StyleSheet.create({
     }
 });
 
-export default({}) => {
+export default({orderNum}) => {
+    const navigation = useNavigation();
     const bottomSheet = useRef();
-    const [category, setCategory] = useState('상세 유형을 선택해주세요');
+    const [disabled, setDisabled] = useState(true);
     const [photo, setPhoto] = useState();
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [category, setCategory] = useState(0);
+
+    const updateButton = () => {
+        if (title.trim().length !== 0 && content.trim().length !== 0 && category !== 0) {
+            setDisabled(false);
+        } else {
+            setDisabled(true);
+        }
+    }
+
+    const sendAlert = () => {
+        Alert.alert("1:1 문의 등록", "이대로 1:1 문의를 등록하시겠습니까?", [
+			{ text: "취소", onPress: () => null, style: "cancel" },
+			{ 
+                text: "등록", onPress: () => {
+                    sendQuestion();
+			}}
+		]);
+    }
+
+    const sendQuestion = async() => {
+        sendAlert();
+        const url = `${mainURL}/user/order/${orderNum}`
+        const data = {
+            img_uri : photo, 
+            title : title, 
+            content: content, 
+            category: category
+        }
+        
+        await axios.post(url, data
+        ).then((res) => {
+            navigation.goBack();
+            ToastAndroid.show("문의가 정상적으로 등록되었습니다", ToastAndroid.SHORT);
+
+        }).catch((err) => {
+            console.log(`sendQuestion err = ${err}`);
+        });
+    }
+
+    useEffect(() => {
+        
+        updateButton();
+
+    }, [title, content, category]);
     
     return(
         <View style={s.WriteQuestionView}>
@@ -108,7 +164,7 @@ export default({}) => {
                                     bottomSheet.current.open()
                                 }}
                             >
-                                <Text style={s.BorderText}>{category}</Text>
+                                <Text style={s.BorderText}>{ConvertCategory(category)}</Text>
                                 <Icon name="caret-down" size={20} />
                             </TouchableOpacity>
                         </View>
@@ -118,12 +174,20 @@ export default({}) => {
                         <TextInput
                             style={s.InputTitle}
                             placeholder="제목을 입력해주세요"
+                            value={title}
+                            onChangeText={(text)=> {
+                                setTitle(text);
+                            }}
                         />
                         <View style={s.InputContent}>
                             <TextInput
                                 placeholder="문의하실 내용을 입력해주세요"
                                 multiline={true}
                                 textAlignVertical="top"
+                                value={content}
+                                onChangeText={(text)=> {
+                                    setContent(text);
+                                }}
                             />
                         </View>
                     </View>
@@ -172,7 +236,11 @@ export default({}) => {
                     </View>
                     <View style={s.SubView}>
                         <TouchableOpacity
-                            style={s.ButtonView}
+                            disabled={disabled}
+                            style={disabled ? s.DisabledButton : s.ActivatedButton}
+                            onPress={() => {
+                                sendAlert();
+                            }}
                         >
                             <Text style={s.ButtonText}>등록하기</Text>
                         </TouchableOpacity>
@@ -196,7 +264,7 @@ export default({}) => {
                     <TouchableOpacity
                         style={s.BottomSheetButton}
                         onPress={() => {
-                            setCategory('상품이 다른 곳으로 갔어요');
+                            setCategory(1);
                             bottomSheet.current.close();
                         }}
                     >
@@ -205,7 +273,7 @@ export default({}) => {
                     <TouchableOpacity
                         style={s.BottomSheetButton}
                         onPress={() => {
-                            setCategory('배송 상품이 안 왔어요');
+                            setCategory(2);
                             bottomSheet.current.close();
                         }}
                     >

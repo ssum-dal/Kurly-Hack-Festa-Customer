@@ -18,5 +18,14 @@ export const ConvertTemperature = (status) => {
     } else {
         return "냉동"
     }
-    
+}
+
+export const ConvertCategory = (status) => {
+    if (status == 0) {
+        return "상세 유형을 선택해주세요"
+    } else if (status == 1) {
+        return "상품이 다른 곳으로 갔어요"
+    } else {
+        return "배송 상품이 안 왔어요"
+    }
 }
