@@ -30,7 +30,6 @@ export default({navigation}) => {
     }
 
     useEffect(() => {
-
         const getData = async() => {
             const url = `${mainURL}/user/order`;
 

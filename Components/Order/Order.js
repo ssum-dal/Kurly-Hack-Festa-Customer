@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { ConvertDateForm } from "../../Utils/Date";
+import { ConvertStatus } from "../../Utils/Status";
 
 const s = StyleSheet.create({
     OrderView: {
@@ -47,11 +48,7 @@ function Order({navigation, orderNum, name, option, amount, state, date }) {
                     onPress={() => {
                         navigation.push('DetailsPresenter',{
                             orderNum: orderNum,
-                            name: name,
-                            option: option,
-                            amount: amount,
                             state: state,
-                            date: date,
                         })
                     }}
                  >
@@ -71,7 +68,7 @@ function Order({navigation, orderNum, name, option, amount, state, date }) {
                     <Text style={s.ItemDetailText}>{orderNum}</Text>
                     <Text style={s.ItemDetailText}>{option}</Text>
                     <Text style={s.ItemDetailText}>{amount}</Text>
-                    <Text style={s.ItemDetailText}>{state == 0 ? '주문 접수' : state == 1 ? '배송완료' : '배송지연'}</Text>
+                    <Text style={s.ItemDetailText}>{ConvertStatus(state)}</Text>
                 </View>
             </View>
         </View>

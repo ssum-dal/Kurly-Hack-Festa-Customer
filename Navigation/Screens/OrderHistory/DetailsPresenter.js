@@ -1,7 +1,10 @@
-import React from "react";
-import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet,TouchableOpacity, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../../../Components/Header/Header";
+import { mainURL } from "../../../Context/Route";
+import axios from "axios";
+import { ConvertStatus, ConvertTemperature } from "../../../Utils/Status";
 
 const s = StyleSheet.create({
     OrderDetailsView: {
@@ -53,8 +56,45 @@ const s = StyleSheet.create({
     }
 });
 
-export default({orderNum, name, option, amount, state, date}) => {
+export default({orderNum, state}) => {
     const navigation = useNavigation();
+    const [storageMethod, setStorageMethod] = useState();
+
+    const renderOrder = ({item, index}) => {
+        return (
+            <View style={s.OrderState}>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={s.OrderText}>{ConvertTemperature(item.temperature)}</Text>
+                    { item.delivered_date && 
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.push('DeliveryCompleted');
+                        }}
+                    >
+                        <Text style={s.OrderStateText}>배송완료</Text>
+                    </TouchableOpacity>
+                    }
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={s.OrderText}>넥스트마일</Text>
+                    <Text style={s.TrackingText}>배송조회</Text>
+                </View>
+            </View>
+        )
+    }
+
+    useEffect(() => {
+        const getData = async() => {
+            const url = `${mainURL}/user/order/${Number(orderNum)}`;
+
+            await axios.get(url).then((result) => {
+                const response = JSON.parse(result.request._response);
+                setStorageMethod(response);
+            })
+        }
+        getData();
+
+    }, []);
 
     return (
         <View style={s.OrderDetailsView}>
@@ -63,22 +103,11 @@ export default({orderNum, name, option, amount, state, date}) => {
                 <Text style={s.SubText}>주문번호  {orderNum}</Text>
             </View>
             <View style={s.SubView}>
-                <View style={s.OrderState}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={s.OrderText}>냉동</Text>
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.push('DeliveryCompleted');
-                            }}
-                        >
-                            <Text style={s.OrderStateText}>{state}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={s.OrderText}>넥스트마일</Text>
-                        <Text style={s.TrackingText}>배송조회</Text>
-                    </View>
-                </View>
+                <FlatList
+                    data={storageMethod}
+                    renderItem={renderOrder}
+                    keyExtractor={(item) => String(item.tracking_num)}
+                />
             </View>
             <View style={s.SubView}>
                 <Text style={s.SubText}>결제정보</Text>
