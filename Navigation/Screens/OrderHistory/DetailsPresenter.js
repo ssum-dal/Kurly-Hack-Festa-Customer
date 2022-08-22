@@ -29,7 +29,8 @@ const s = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         color: '#000000',
-        marginHorizontal: '5%'
+        paddingHorizontal: '5%',
+        textDecorationLine: 'underline'
     },
     TrackingText: {
         fontSize: 15,
@@ -65,7 +66,13 @@ export default({orderNum, name, option, amount, state, date}) => {
                 <View style={s.OrderState}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={s.OrderText}>냉동</Text>
-                        <Text style={s.OrderStateText}>{state}</Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.push('DeliveryCompleted');
+                            }}
+                        >
+                            <Text style={s.OrderStateText}>{state}</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={s.OrderText}>넥스트마일</Text>

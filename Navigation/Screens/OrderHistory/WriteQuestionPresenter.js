@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
-import { View, Text, StyleSheet, Keyboard, TextInput, TouchableWithoutFeedback, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Keyboard, TextInput, TouchableWithoutFeedback, TouchableOpacity, ScrollView, ImageBackground } from "react-native";
 import Header from "../../../Components/Header/Header";
 import Icon from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const s = StyleSheet.create({
     WriteQuestionView: {
@@ -52,6 +53,10 @@ const s = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    ImageStyle: {
+        width: '100%',
+        aspectRatio: 1/1,
+    },
     ButtonView: {
         backgroundColor: '#5F0080',
         borderRadius: 7
@@ -82,7 +87,8 @@ const s = StyleSheet.create({
 
 export default({}) => {
     const bottomSheet = useRef();
-    const [category, setCategory] = useState('상세 유형을 선택해주세요')
+    const [category, setCategory] = useState('상세 유형을 선택해주세요');
+    const [photo, setPhoto] = useState();
     
     return(
         <View style={s.WriteQuestionView}>
@@ -125,8 +131,43 @@ export default({}) => {
                         <TouchableOpacity
                             style={s.CameraView}
                             activeOpacity={1}
-                        >
-                            <Icon name="camera" size={30}/>
+                            onPress={() => {
+                                launchImageLibrary(
+                                    {
+                                        mediaType: 'photo',
+                                        maxWidth: 400,
+                                        maxHeight: 400,
+                                        selectionLimit: 1,
+                                    },
+                                    (response) => {
+                                        if (response.didCancel || response.errorCode) {
+                                            console.log(`launchImageLibrary error: ${response.errorCode}\n${response.errorMessage}`);
+                                            return;
+                                        }
+                                        if (!response.assets[0]) {
+                                            console.log('launchImageLibrary no photo');
+                                        }
+                                        
+                                        let photo = response.assets[0];
+                                        setPhoto(photo.uri)
+                                    }
+                                );
+                            }}
+                        >{!photo ?
+                            <Icon name="camera" size={30}/> :
+                            <ImageBackground
+                                style={s.ImageStyle}
+                                source={{uri: photo}}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setPhoto();
+                                    }}
+                                >
+                                    <Icon name="close-circle" size={20} style={s.DeleteImage}/>
+                                </TouchableOpacity>
+                            </ImageBackground>
+                        }
                         </TouchableOpacity>
                     </View>
                     <View style={s.SubView}>
