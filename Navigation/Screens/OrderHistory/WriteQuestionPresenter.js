@@ -136,16 +136,24 @@ export default({orderNum, tempArr}) => {
 
     const sendQuestion = async() => {
         const url = `${mainURL}/user/order/${Number(orderNum)}`
-        const data = {
-            img_uri : photo, 
-            title : title, 
-            content: content, 
-            category: ConvertCategory(category),
-            temperature: tempState
+
+        const data = new FormData();
+        data.append('title', title);
+        data.append('content', content);
+        data.append('category', ConvertCategory(category));
+        data.append('temperature', tempState);
+
+        if (photo) {
+            data.append('img_uri', {
+                uri: photo,
+                name: String(photo),
+                type: 'multipart/form-data'
+            })
         }
         
-        await axios.post(url, data
-        ).then((result) => {
+        await axios.post(url, data, {
+            headers: {'content-type': 'multipart/form-data'}
+        }).then((result) => {
             navigation.goBack();
             ToastAndroid.show("문의가 정상적으로 등록되었습니다", ToastAndroid.SHORT);
 
