@@ -1,0 +1,68 @@
+{
+    "project_info": {
+      "project_number": "1012152559347",
+      "project_id": "kurlyvery-notification",
+      "storage_bucket": "kurlyvery-notification.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:1012152559347:android:4abca2dd15105efb74b986",
+          "android_client_info": {
+            "package_name": "com.kurlycustomer"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "1012152559347-2kdf1o6qron1c5m4v5gfbd5t0fvakh21.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyAOpTMSdY9REPLrQc4r0koA-XwWMV_Dz3o"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "1012152559347-2kdf1o6qron1c5m4v5gfbd5t0fvakh21.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      },
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:1012152559347:android:e3d2ae871972049274b986",
+          "android_client_info": {
+            "package_name": "com.projectkurly"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "1012152559347-2kdf1o6qron1c5m4v5gfbd5t0fvakh21.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyAOpTMSdY9REPLrQc4r0koA-XwWMV_Dz3o"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "1012152559347-2kdf1o6qron1c5m4v5gfbd5t0fvakh21.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
