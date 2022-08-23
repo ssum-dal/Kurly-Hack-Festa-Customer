@@ -73,7 +73,10 @@ export default({orderNum, state}) => {
                     <TouchableOpacity
                         disabled={item.tracking_status == 3 ? false: true}
                         onPress={() => {
-                            navigation.push('DeliveryCompleted');
+                            navigation.push('DeliveryCompleted', {
+                                orderNum: orderNum,
+                                temperature: item.temperature
+                            });
                         }}
                     >
                         <Text style={item.tracking_status == 3 ? s.CompletedText : s.OrderStateText}>{ConvertStatus(item.tracking_status)}</Text>

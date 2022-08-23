@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import Header from "../../../Components/Header/Header";
 import Icon from "react-native-vector-icons/Ionicons";
+import { mainURL } from "../../../Context/Route";
+import axios from "axios";
 
 const s = StyleSheet.create({
     CompletedView: {
@@ -28,21 +30,50 @@ const s = StyleSheet.create({
     }
 });
 
-export default() => {
+export default({orderNum, temperature}) => {
+
+    const [data, setData] = useState([{text: "", img_uri: ""}]);
+
+    useEffect(()=> {
+        const getData = async() => {
+            let tempState;
+            
+            if (temperature === 'room') {
+                tempState = 0
+            } else if (temperature === 'refrigerating') {
+                tempState = 1
+            } else {
+                tempState = 2
+            }
+
+            const url = `${mainURL}/user/order/${orderNum}/${tempState}`;
+
+            await axios.get(url).then((result) => {
+                const response = JSON.parse(result.request._response);
+                setData(response);
+            })
+        }
+        getData();
+
+    }, []);
+    
     return(
         <View style={s.CompletedView}>
             <Header title={'배송완료'}/>
             <View style={s.IconView}>
                 <Icon name="cart" size={60} color="#5F0080"/>
             </View>
-            <Text style={s.CompletedText}>안녕하세요 천예지 고객님 마켓컬리의 강지복입니다.</Text>
-            <Text style={s.CompletedText}>주문하신 신선한 상품을 요청하신 문 앞에 안전하게 배송완료 하였습니다.</Text>
+            {data.length > 0 &&
+                <Text style={s.CompletedText}>{data[0].text}</Text>
+            }
         
             <View style={s.ImageView}>
-                <Image
-                    source={{uri : 'https://cdn.pixabay.com/photo/2021/08/25/07/21/cat-6572630_960_720.jpg'}}
-                    style={s.ImageStyle}
-                />
+                {data.length > 0 && data[0].img_uri > 0 &&
+                    <Image
+                        source={{uri : data[0].img_uri}}
+                        style={s.ImageStyle}
+                    />
+                }
             </View>
         </View>
     )

@@ -4,12 +4,17 @@ import DeliveryCompletedPresenter from "./DeliveryCompletedPresenter";
 
 const Stack = createStackNavigator();
 
-export default () => {
+export default ({route}) => {
     return (
         <Stack.Navigator>
             <Stack.Screen
                 name="DeliveryCompletedPresenter"
-                component={DeliveryCompletedPresenter}
+                children={() => (
+                    <DeliveryCompletedPresenter
+                        orderNum={route.params.orderNum}
+                        temperature={route.params.temperature}
+                    />
+                )}
                 options={{headerShown: false}}
             />
         </Stack.Navigator>
