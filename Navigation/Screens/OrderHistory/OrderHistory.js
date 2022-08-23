@@ -33,6 +33,7 @@ export default () => {
                 children={({route}) => (
                     <WriteQuestionPresenter
                         orderNum={route.params.orderNum}
+                        tempArr={route.params.tempArr}
                     />
                 )}
                 options={{headerShown: false, gestureEnabled: true}}

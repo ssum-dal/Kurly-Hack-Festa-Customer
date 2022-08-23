@@ -1,12 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Keyboard, TextInput, TouchableWithoutFeedback, TouchableOpacity, ScrollView, ImageBackground, Alert, ToastAndroid } from "react-native";
+import { 
+    View, 
+    Text, 
+    StyleSheet, 
+    Keyboard, 
+    TextInput, 
+    TouchableWithoutFeedback, 
+    TouchableOpacity, 
+    ScrollView, 
+    ImageBackground, 
+    Alert, 
+    ToastAndroid, 
+} from "react-native";
 import Header from "../../../Components/Header/Header";
 import Icon from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from "axios";
 import { mainURL } from "../../../Context/Route";
-import { ConvertCategory } from "../../../Utils/Status";
+import { ConvertCategory, ConvertTemperature } from "../../../Utils/Status";
 import { useNavigation } from "@react-navigation/native";
 
 const s = StyleSheet.create({
@@ -93,17 +105,19 @@ const s = StyleSheet.create({
     }
 });
 
-export default({orderNum}) => {
+export default({orderNum, tempArr}) => {
     const navigation = useNavigation();
     const bottomSheet = useRef();
+    const tempSheet = useRef();
     const [disabled, setDisabled] = useState(true);
     const [photo, setPhoto] = useState();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [category, setCategory] = useState(0);
+    const [tempState, setTempState] = useState(0);
 
     const updateButton = () => {
-        if (title.trim().length !== 0 && content.trim().length !== 0 && category !== 0) {
+        if (title.trim().length !== 0 && content.trim().length !== 0 && category !== 0 && tempState !== 0) {
             setDisabled(false);
         } else {
             setDisabled(true);
@@ -121,17 +135,17 @@ export default({orderNum}) => {
     }
 
     const sendQuestion = async() => {
-        sendAlert();
-        const url = `${mainURL}/user/order/${orderNum}`
+        const url = `${mainURL}/user/order/${Number(orderNum)}`
         const data = {
             img_uri : photo, 
             title : title, 
             content: content, 
-            category: category
+            category: ConvertCategory(category),
+            temperature: tempState
         }
         
         await axios.post(url, data
-        ).then((res) => {
+        ).then((result) => {
             navigation.goBack();
             ToastAndroid.show("문의가 정상적으로 등록되었습니다", ToastAndroid.SHORT);
 
@@ -144,7 +158,7 @@ export default({orderNum}) => {
         
         updateButton();
 
-    }, [title, content, category]);
+    }, [title, content, category, tempState]);
     
     return(
         <View style={s.WriteQuestionView}>
@@ -168,10 +182,23 @@ export default({orderNum}) => {
                                 <Icon name="caret-down" size={20} />
                             </TouchableOpacity>
                         </View>
+                        <View style={s.Border}>
+                            <TouchableOpacity
+                                style={{flexDirection: 'row', justifyContent: 'space-between'}}
+                                activeOpacity={1}
+                                onPress={() => {
+                                    tempSheet.current.open()
+                                }}
+                            >
+                                <Text style={s.BorderText}>{ConvertTemperature(tempState)}</Text>
+                                <Icon name="caret-down" size={20} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={s.SubView}>
                         <Text style={s.SubText}>문의 내용 <Text style={{color: '#ff0000'}}>*</Text></Text>
                         <TextInput
+                            maxLength={20}
                             style={s.InputTitle}
                             placeholder="제목을 입력해주세요"
                             value={title}
@@ -279,6 +306,38 @@ export default({orderNum}) => {
                     >
                         <Text style={s.BottomSheeText}>배송 상품이 안 왔어요</Text>
                     </TouchableOpacity>
+                </View>
+            </RBSheet>
+            <RBSheet
+                ref={tempSheet}
+                height={200}
+                closeOnDragDown={true}
+                customStyles={{
+                    draggableIcon: { backgroundColor: "#a2a2a2" },
+                    container:{
+                        borderTopRightRadius:20,
+                        borderTopLeftRadius: 20,
+                    }
+                }}
+            >
+                <View style={s.BottomSheetView}>
+                    <Text style={s.BottomSheetHeadText}>배송 유형 선택</Text>
+                    {
+                        tempArr.map((v, index)=>{
+                            return(
+                                <TouchableOpacity
+                                    key={String(v)}
+                                    style={s.BottomSheetButton}
+                                    onPress={() => {
+                                        setTempState(v);
+                                        tempSheet.current.close();
+                                    }}
+                                >
+                                    <Text style={s.BottomSheeText}>{ConvertTemperature(v)}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
                 </View>
             </RBSheet>
         </View>

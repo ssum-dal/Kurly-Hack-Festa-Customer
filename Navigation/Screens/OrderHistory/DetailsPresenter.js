@@ -97,7 +97,6 @@ export default({orderNum, state}) => {
             })
         }
         getData();
-
     }, []);
 
     return (
@@ -130,7 +129,8 @@ export default({orderNum, state}) => {
                     <TouchableOpacity
                         onPress={() => {
                             navigation.push('WriteQuestionPresenter', {
-                                orderNum: orderNum
+                                orderNum: orderNum,
+                                tempArr : storageMethod.map(v=>v.temperature)
                             });
                         }}
                     >

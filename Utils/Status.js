@@ -15,8 +15,10 @@ export const ConvertTemperature = (status) => {
         return "상온"
     } else if (status == "refrigerating") {
         return "냉장"
-    } else {
+    } else if (status == "freezing") {
         return "냉동"
+    } else {
+        return "문의하실 배송을 선택해주세요"
     }
 }
 
