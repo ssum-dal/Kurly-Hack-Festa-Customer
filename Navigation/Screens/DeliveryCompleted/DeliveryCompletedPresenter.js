@@ -33,6 +33,7 @@ const s = StyleSheet.create({
 export default({orderNum, temperature}) => {
 
     const [data, setData] = useState([{text: "", img_uri: ""}]);
+    console.log(data)
 
     useEffect(()=> {
         const getData = async() => {
@@ -68,7 +69,7 @@ export default({orderNum, temperature}) => {
             }
         
             <View style={s.ImageView}>
-                {data.length > 0 && data[0].img_uri > 0 &&
+                {data.length > 0 && data[0].img_uri.length > 0 &&
                     <Image
                         source={{uri : data[0].img_uri}}
                         style={s.ImageStyle}
