@@ -130,7 +130,7 @@ export default({orderNum, state}) => {
                         onPress={() => {
                             navigation.push('WriteQuestionPresenter', {
                                 orderNum: orderNum,
-                                tempArr : storageMethod.map(v=>v.temperature)
+                                tempArr : storageMethod.filter(v=> v.tracking_status === 3).map(v=>v.temperature)
                             });
                         }}
                     >
