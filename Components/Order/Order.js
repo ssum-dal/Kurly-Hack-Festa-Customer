@@ -42,35 +42,37 @@ const s = StyleSheet.create({
 function Order({navigation, orderNum, name, option, amount, state, date }) {
     return (
         <View style={s.OrderView}>
-            <View style={s.DateView}>
-                 <Text style={s.DateText}>{ConvertDateForm(new Date(date))}</Text>
-                 <TouchableOpacity
-                    onPress={() => {
-                        navigation.push('DetailsPresenter',{
-                            orderNum: orderNum,
-                            state: state,
-                        })
-                    }}
-                 >
-                     <Text style={s.OrderDetailText}>주문 상세{'>'}</Text>
-                 </TouchableOpacity>
-            </View>
-            <View style={s.OrderInfoView}>
-                <View>
-                     <Text style={s.CategoryText}>상품명</Text>
-                     <Text style={s.CategoryText}>주문 번호</Text>
-                     <Text style={s.CategoryText}>결제 방법</Text>
-                     <Text style={s.CategoryText}>결제 금액</Text>
-                     <Text style={s.CategoryText}>주문 상태</Text>
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => {
+                    navigation.push('DetailsPresenter',{
+                        orderNum: orderNum,
+                        state: state,
+                    })
+                }}
+            >
+                <View style={s.DateView}>
+                    <Text style={s.DateText}>{ConvertDateForm(new Date(date))}</Text>
+                    <Text style={s.OrderDetailText}>주문 상세{'>'}</Text>
+                 
                 </View>
-                <View>
-                    <Text style={s.ItemDetailText} numberOfLines={1} ellipsizeMode="tail">{name}</Text>
-                    <Text style={s.ItemDetailText}>{orderNum}</Text>
-                    <Text style={s.ItemDetailText}>{option}</Text>
-                    <Text style={s.ItemDetailText}>{amount}</Text>
-                    <Text style={s.ItemDetailText}>{ConvertStatus(state)}</Text>
+                <View style={s.OrderInfoView}>
+                    <View>
+                         <Text style={s.CategoryText}>상품명</Text>
+                         <Text style={s.CategoryText}>주문 번호</Text>
+                         <Text style={s.CategoryText}>결제 방법</Text>
+                         <Text style={s.CategoryText}>결제 금액</Text>
+                         <Text style={s.CategoryText}>주문 상태</Text>
+                    </View>
+                    <View>
+                        <Text style={s.ItemDetailText} numberOfLines={1} ellipsizeMode="tail">{name}</Text>
+                        <Text style={s.ItemDetailText}>{orderNum}</Text>
+                        <Text style={s.ItemDetailText}>{option}</Text>
+                        <Text style={s.ItemDetailText}>{amount}</Text>
+                        <Text style={s.ItemDetailText}>{ConvertStatus(state)}</Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }
