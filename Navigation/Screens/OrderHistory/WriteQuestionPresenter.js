@@ -97,7 +97,8 @@ const s = StyleSheet.create({
     BottomSheetHeadText: {
         fontWeight: 'bold',
         fontSize: 18,
-        color: '#000000'
+        color: '#000000',
+        marginBottom: '3%'
     },
     BottomSheeText: {
         fontSize: 16,
@@ -178,30 +179,31 @@ export default({orderNum, tempArr}) => {
                         <View style={s.Border}>
                             <Text style={s.BorderText}>배송 문의</Text>
                         </View>
-                        <View style={s.Border}>
-                            <TouchableOpacity
-                                style={{flexDirection: 'row', justifyContent: 'space-between'}}
-                                activeOpacity={1}
-                                onPress={() => {
-                                    bottomSheet.current.open()
-                                }}
-                            >
+                        <TouchableOpacity
+                            style={s.Border}
+                            activeOpacity={1}
+                            onPress={() => {
+                                bottomSheet.current.open()
+                            }}
+                        >
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <Text style={s.BorderText}>{ConvertCategory(category)}</Text>
                                 <Icon name="caret-down" size={20} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={s.Border}>
-                            <TouchableOpacity
-                                style={{flexDirection: 'row', justifyContent: 'space-between'}}
-                                activeOpacity={1}
-                                onPress={() => {
-                                    tempSheet.current.open()
-                                }}
-                            >
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={s.Border}
+                            activeOpacity={1}
+                            onPress={() => {
+                                tempSheet.current.open()
+                            }}
+                        >
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <Text style={s.BorderText}>{ConvertTemperature(tempState)}</Text>
                                 <Icon name="caret-down" size={20} />
-                            </TouchableOpacity>
-                        </View>
+                            </View>
+                        </TouchableOpacity>
+
                     </View>
                     <View style={s.SubView}>
                         <Text style={s.SubText}>문의 내용 <Text style={{color: '#ff0000'}}>*</Text></Text>

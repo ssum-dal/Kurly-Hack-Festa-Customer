@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import Header from "../../../Components/Header/Header";
-import Icon from "react-native-vector-icons/Ionicons";
 import { mainURL } from "../../../Context/Route";
 import axios from "axios";
 
@@ -10,11 +9,10 @@ const s = StyleSheet.create({
         flex: 1,
         backgroundColor: '#ffffff',
         paddingHorizontal: '5%',
-        justifyContent: 'center'
     },
     LogoView: {
         alignItems: 'center',
-        paddingVertical: '5%'
+        paddingVertical: '15%'
     },
     CompletedText: {
         color: '#000000',
