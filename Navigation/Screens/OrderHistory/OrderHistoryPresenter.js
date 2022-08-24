@@ -4,16 +4,28 @@ import axios from "axios";
 import Header from "../../../Components/Header/Header";
 import Order from "../../../Components/Order/Order";
 import { mainURL } from "../../../Context/Route";
+import { useIsFocused } from "@react-navigation/native";
 
 const s = StyleSheet.create({
     OrderHistoryView: {
         flex: 1,
         backgroundColor: '#ffffff',
     },
+    HeaderView: {
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
+        paddingVertical: '4%'
+    },
+    TextView: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#000000'
+    }
 });
 
 export default({navigation}) => {
     const [orderList, setOrderList] = useState([]);
+    const isFocused = useIsFocused();
 
     const renderOrderList= ({item, index}) => {
         return (
@@ -40,11 +52,13 @@ export default({navigation}) => {
         }
         getData();
 
-    }, []);
+    }, [isFocused]);
 
     return(
         <View style={s.OrderHistoryView}>
-            <Header title={'주문 내역'}/>
+            <View style={s.HeaderView}>
+                <Text style={s.TextView}>주문내역</Text>
+            </View>
             <FlatList
                 data={orderList}
                 renderItem={renderOrderList}

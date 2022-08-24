@@ -10,8 +10,9 @@ const s = StyleSheet.create({
         flex: 1,
         backgroundColor: '#ffffff',
         paddingHorizontal: '5%',
+        justifyContent: 'center'
     },
-    IconView: {
+    LogoView: {
         alignItems: 'center',
         paddingVertical: '5%'
     },
@@ -33,7 +34,6 @@ const s = StyleSheet.create({
 export default({orderNum, temperature}) => {
 
     const [data, setData] = useState([{text: "", img_uri: ""}]);
-    console.log(data)
 
     useEffect(()=> {
         const getData = async() => {
@@ -59,10 +59,15 @@ export default({orderNum, temperature}) => {
     }, []);
     
     return(
+        <>
+        <Header title={'배송완료'}/>
         <View style={s.CompletedView}>
-            <Header title={'배송완료'}/>
-            <View style={s.IconView}>
-                <Icon name="cart" size={60} color="#5F0080"/>
+            <View style={s.LogoView}>
+                <Image
+                    resizeMode="stretch"
+                    style={{width: 200, height: 100}} 
+                    source={require('./../../../src/res/logo.png')}
+                />
             </View>
             {data.length > 0 &&
                 <Text style={s.CompletedText}>{data[0].text}</Text>
@@ -77,5 +82,6 @@ export default({orderNum, temperature}) => {
                 }
             </View>
         </View>
+        </>
     )
 }

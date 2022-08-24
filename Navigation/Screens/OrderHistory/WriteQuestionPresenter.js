@@ -61,7 +61,7 @@ const s = StyleSheet.create({
         height: 150
     },
     CameraView: {
-        width: '20%',
+        width: '25%',
         aspectRatio: 1/1,
         borderWidth: 1,
         borderRadius: 7,
@@ -284,7 +284,7 @@ export default({orderNum, tempArr}) => {
             </TouchableWithoutFeedback>
             <RBSheet
                 ref={bottomSheet}
-                height={200}
+                height={250}
                 closeOnDragDown={true}
                 customStyles={{
                     draggableIcon: { backgroundColor: "#a2a2a2" },
@@ -318,7 +318,7 @@ export default({orderNum, tempArr}) => {
             </RBSheet>
             <RBSheet
                 ref={tempSheet}
-                height={200}
+                height={250}
                 closeOnDragDown={true}
                 customStyles={{
                     draggableIcon: { backgroundColor: "#a2a2a2" },
