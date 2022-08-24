@@ -126,7 +126,7 @@ export default({orderNum, tempArr}) => {
     }
 
     const sendAlert = () => {
-        Alert.alert("1:1 문의 등록", "이대로 1:1 문의를 등록하시겠습니까?", [
+        Alert.alert("1:1 문의 등록", "배송기사에게 문의를 보내시겠습니까?", [
 			{ text: "취소", onPress: () => null, style: "cancel" },
 			{ 
                 text: "등록", onPress: () => {

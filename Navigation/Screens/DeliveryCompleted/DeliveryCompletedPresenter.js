@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import Header from "../../../Components/Header/Header";
 import { mainURL } from "../../../Context/Route";
 import axios from "axios";
@@ -7,7 +7,7 @@ import axios from "axios";
 const s = StyleSheet.create({
     CompletedView: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#eee6f2',
         paddingHorizontal: '5%',
     },
     LogoView: {
@@ -21,10 +21,10 @@ const s = StyleSheet.create({
     },
     ImageView: {
         alignItems: 'center',
-        marginVertical : '3%'
+        marginVertical : '10%'
     },
     ImageStyle: {
-        width: '50%',
+        width: '65%',
         aspectRatio: 1/1,
     }
 });
@@ -59,7 +59,7 @@ export default({orderNum, temperature}) => {
     return(
         <>
         <Header title={'배송완료'}/>
-        <View style={s.CompletedView}>
+        <ScrollView style={s.CompletedView}>
             <View style={s.LogoView}>
                 <Image
                     resizeMode="stretch"
@@ -79,7 +79,7 @@ export default({orderNum, temperature}) => {
                     />
                 }
             </View>
-        </View>
+        </ScrollView>
         </>
     )
 }
